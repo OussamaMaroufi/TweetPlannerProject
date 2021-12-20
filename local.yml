@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  django:
+    image: webv2
+    container_name: webv2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+  jobtweet:
+    image: webtweet
+    container_name: webtweet
+    build:
+      context: .
+    volumes:
+      - . ../app/db.sqlite3
+    environment:
+      - SQLITE3_DB=db.sqlite3
+
+    command: python job2.py
+    depends_on:
+      - django
+      
